@@ -1,0 +1,12 @@
+{
+  "csv": {
+    "folder": "src/main/resources"
+  },
+  "mysql": {
+    "ip": "localhost",
+    "port": 3306,
+    "username": "root",
+    "password": "toor",
+    "databaseName": "waytation"
+  }
+}
