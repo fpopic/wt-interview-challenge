@@ -1,0 +1,13 @@
+{
+  "csv": {
+    "folder": "data"
+  },
+  "mysql": {
+    "driver": "com.mysql.jdbc.Driver",
+    "host": "localhost",
+    "port": "3306",
+    "database": "waytation",
+    "username": "root",
+    "password": "toor"
+  }
+}

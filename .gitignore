@@ -5,7 +5,7 @@
 ### SBT template
 # Simple Build Tool
 # http://www.scala-sbt.org/release/docs/Getting-Started/Directories.html#configuring-version-control
-
+.idea/*
 dist/*
 target/
 lib_managed/

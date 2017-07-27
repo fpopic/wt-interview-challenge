@@ -1,7 +1,10 @@
 package com.waytation
 
+import java.io.File
+
 import com.typesafe.config.ConfigFactory
-import com.waytation.connection.{CSVConnector, DataConnector}
+import com.waytation.connection.{CSVFileConnector, MySQLConnector}
+import com.waytation.datasource.{StructuredDatasourceManager, UnstructuredDatasourceReader}
 import org.apache.spark.sql.SparkSession
 
 /*
@@ -18,28 +21,20 @@ case class Station(id: Int, zoneId: Int)
 case class Zone(id: Int, name: String)
 */
 
-object Main {
+object AnalysisJob {
 
   def main(args: Array[String]): Unit = {
 
-    implicit val spark = SparkSession
-      .builder
-      .appName("WaytationChallengeSparkJob")
-      .master("local[*]")
-      .getOrCreate
+    implicit val spark =
+      SparkSession.builder
+        .appName("WaytationAnalsisJob")
+        .master("local[*]")
+        .getOrCreate
 
-    val config = ConfigFactory
-      .parseResources("database.json")
-      .getConfig("csv")
+    val file = new File("datastore.json")
+    val config = ConfigFactory.parseFile(file)
 
-    val connector: DataConnector = new CSVConnector(config)
-
-
-
-    val a = connector.readDataFrame("tags.csv")
-
-    println(a.count())
-
+    println(config.entrySet())
 
   }
 }

@@ -1,5 +1,5 @@
 lazy val root = (project in file(".")).settings(
-  name  := "WaytationChallenge",
+  name := "WaytationChallenge",
   version := "1.0",
   scalaVersion := "2.11.11",
   mainClass in Compile := Some("com.waytation.Main"),
@@ -15,7 +15,8 @@ lazy val unprovidedDependencies = Seq(
   "org.apache.spark" %% "spark-sql" % sparkVersion,
   "com.typesafe" % "config" % "1.3.1",
   "org.scalactic" %% "scalactic" % "3.0.1",
-  "org.scalatest" %% "scalatest" % "3.0.1" % Test
+  "org.scalatest" %% "scalatest" % "3.0.1" % Test,
+  "mysql" % "mysql-connector-java" % "5.1.40"
 )
 
 libraryDependencies ++= unprovidedDependencies
