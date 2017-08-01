@@ -1,6 +1,6 @@
-package com.waytation.datasource
+package com.waytation.conference.datasource
 
-import com.waytation.model.{Signal, Station, Tag, Zone}
+import com.waytation.conference.model.{Signal, Station, Tag, Zone}
 import org.apache.spark.sql.Dataset
 
 trait DatasourceWriter {

@@ -1,18 +1,16 @@
 # Created by .ignore support plugin (hsz.mobi)
 ### Scala template
-*.class
 *.log
 ### SBT template
 # Simple Build Tool
 # http://www.scala-sbt.org/release/docs/Getting-Started/Directories.html#configuring-version-control
-.idea/*
+.idea/
 dist/*
 target/
 lib_managed/
 src_managed/
 project/boot/
 project/plugins/project/
-.history
 .cache
 .lib/
 ### JetBrains template
@@ -20,23 +18,15 @@ project/plugins/project/
 # Reference: https://intellij-support.jetbrains.com/hc/en-us/articles/206544839
 ,idea/
 # User-specific stuff:
-.idea/**/workspace.xml
 .idea/**/tasks.xml
 .idea/dictionaries
 
 # Sensitive or high-churn files:
-.idea/**/dataSources/
 .idea/**/dataSources.ids
-.idea/**/dataSources.xml
-.idea/**/dataSources.local.xml
 .idea/**/sqlDataSources.xml
 .idea/**/dynamic.xml
-.idea/**/uiDesigner.xml
-
 # Gradle:
 .idea/**/gradle.xml
-.idea/**/libraries
-
 # Mongo Explorer plugin:
 .idea/**/mongoSettings.xml
 

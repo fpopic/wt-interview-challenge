@@ -1,11 +1,11 @@
-package com.waytation
+package com.waytation.conference.jobs
 
 import java.io.File
 import java.sql.DriverManager
 
 import com.typesafe.config.ConfigFactory
 
-object DatastorePreJob {
+object PrepareMySQLJob {
 
   def main(args: Array[String]): Unit = {
 
@@ -33,7 +33,7 @@ object DatastorePreJob {
 
     val affected = query.executeBatch().toSeq
 
-    println(s"Rows affected Count = $affected")
+    println(s"Rows affected: $affected")
 
     conn.close()
   }

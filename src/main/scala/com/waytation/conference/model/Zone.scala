@@ -1,15 +1,17 @@
-package com.waytation.model
+package com.waytation.conference.model
+
+import org.apache.spark.sql.Row
 
 // 53,17
 case class Zone(id: Int, name: String)
 
 object Zone extends Parsable with Serializable {
 
-  def isParsable(parts: Array[String]): Boolean = {
+  def isParsable(parts: Row): Boolean = {
     try {
       assert(parts.length == 2)
-      parts(0).toInt
-      assert(parts(1).nonEmpty)
+      parts.getString(0).toInt
+      assert(parts.getString(1).nonEmpty)
     }
     catch {
       case (_: NumberFormatException | _: AssertionError) =>

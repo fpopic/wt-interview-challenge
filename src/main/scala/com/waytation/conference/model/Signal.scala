@@ -1,8 +1,9 @@
-package com.waytation.model
+package com.waytation.conference.model
 
 import java.sql.Timestamp
 
-import com.waytation.misc.UnixTimestamp._
+import com.waytation.conference.misc.UnixTimestamp._
+import org.apache.spark.sql.Row
 
 /*
   The RSSI, a negative number, is an indirect measure for the proximity of a tag to a station.
@@ -16,34 +17,34 @@ case class Signal(timestamp: Timestamp, rssi: Int, stationId: Int, tagId: Int)
 
 object Signal extends Parsable with Considerable with Serializable {
 
-  def isParsable(parts: Array[String]): Boolean = {
+  def isParsable(row: Row): Boolean = {
     try {
-      assert(parts.length == 4)
-      parts(0).toLong
-      parts(1).toInt
-      parts(2).toInt
-      parts(3).toInt
+      assert(row.length == 4)
+      row.getString(0).toLong
+      row.getString(1).toInt
+      row.getString(2).toInt
+      row.getString(3).toInt
     }
     catch {
       case (_: NumberFormatException | _: AssertionError) =>
-        println(s"Signal not parsable: ${parts.mkString("(", ",", ")")}")
+        //println(s"Signal not parsable: ${row.mkString("(", ",", ")")}")
         return false
     }
     true
   }
 
-  def isConsiderable(parts: Array[String]): Boolean = {
+  def isConsiderable(row: Row): Boolean = {
     try {
-      val timestamp = new Timestamp(parts(0).toLong)
-      assert(isValid(timestamp))
+      val timestamp = new Timestamp(row.getString(0).toLong)
+      assert(isValidTimestamp(timestamp))
       val hour = timestamp.toLocalDateTime.getHour
       assert(hour >= 10 && hour <= 16)
-      val rssi = parts(1).toInt
+      val rssi = row.getString(1).toInt
       assert(rssi >= -100 && rssi <= 0)
     }
     catch {
       case (_: AssertionError) =>
-//        println(s"Signal not considerable: ${parts.mkString("(", ",", ")")}")
+        //println(s"Signal not considerable: ${parts.mkString("(", ",", ")")}")
         return false
     }
     true

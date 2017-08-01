@@ -1,6 +1,7 @@
 {
   "csv": {
-    "folder": "data"
+    "in-folder": "data/cleaned",
+    "out-folder": "result"
   },
   "mysql": {
     "driver": "com.mysql.jdbc.Driver",

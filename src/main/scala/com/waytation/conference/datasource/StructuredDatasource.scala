@@ -1,11 +1,11 @@
-package com.waytation.datasource
+package com.waytation.conference.datasource
 
-import com.waytation.connection.DatasetConnector
-import com.waytation.model.{Signal, Station, Tag, Zone}
+import com.waytation.conference.connection.DataConnector
+import com.waytation.conference.model.{Signal, Station, Tag, Zone}
 import org.apache.spark.sql.SaveMode.Append
 import org.apache.spark.sql.{Dataset, SaveMode, SparkSession}
 
-class StructuredDatasourceManager(val dc: DatasetConnector)
+class StructuredDatasource(val dc: DataConnector)
   (implicit val spark: SparkSession) extends DatasourceReader with DatasourceWriter {
 
   import spark.implicits._
@@ -13,7 +13,7 @@ class StructuredDatasourceManager(val dc: DatasetConnector)
   def getSignals: Dataset[Signal] = {
     dc.read("signals")
       .select(
-        'timestamp_ as 'timestamp,
+        'timestamp,
         'rssi,
         'stations_id as 'stationId,
         'distributed_tags_id as 'tagId
@@ -34,7 +34,7 @@ class StructuredDatasourceManager(val dc: DatasetConnector)
   def getStations: Dataset[Station] = {
     dc.read("stations")
       .select(
-        'stations_id as 'id,
+        'id,
         'zones_id as 'zoneId
       )
       .as[Station]
@@ -48,8 +48,6 @@ class StructuredDatasourceManager(val dc: DatasetConnector)
       )
       .as[Zone]
   }
-
-  ////////////////////////////////////////////////////////////////
 
   def writeSignals(signals: Dataset[Signal]): Unit = {
     val renamedSignals = signals.select(
