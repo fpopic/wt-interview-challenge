@@ -15,12 +15,11 @@ object AnalysisJob {
 
   // average rssi = -82
 
-  private val rssiPresenceTreshold = -85
+  private val rssiPresenceThreshold = -85
 
   def computeMostPopularZoneForEachDay(richsignals: DataFrame): Dataset[(Int, String)] = {
     import richsignals.sparkSession.implicits._
 
-    // OK with dummy rssi criteria
     val joined = richsignals
       .withColumn("day", dayofyear('timestamp))
       .select(
@@ -33,7 +32,7 @@ object AnalysisJob {
     val minDay = joined.select('day).agg(min('day)).first().getInt(0)
 
     joined
-      .where('rssi >= rssiPresenceTreshold)
+      .where('rssi >= rssiPresenceThreshold)
       .groupBy('day, 'room)
       .agg(count('day), ('day - minDay + 1) as "orderedDay")
       .withColumn("day", 'orderedDay).drop('orderedDay)
@@ -69,7 +68,7 @@ object AnalysisJob {
         'name as 'room,
         'rssi
       )
-      .where('rssi >= rssiPresenceTreshold)
+      .where('rssi >= rssiPresenceThreshold)
       .drop('rssi)
       .as[(Timestamp, Int, String)]
 
@@ -95,7 +94,7 @@ object AnalysisJob {
       .count()
   }
 
-  def computeAverageTagsPerHour(signals: Dataset[Signal]): Dataset[(Int, Int)] = {
+  def computeAveragePresentTagsPerHour(signals: Dataset[Signal]): Dataset[(Int, Int)] = {
     import signals.sparkSession.implicits._
 
     val (firstDay, lastDay) = signals
@@ -109,10 +108,13 @@ object AnalysisJob {
     signals
       .select(
         hour('timestamp) as "hour",
-        'tagId
+        'tagId,
+        'rssi
       )
+      .where('rssi >= rssiPresenceThreshold)
+      .drop('rssi)
       .groupBy('hour)
-      .agg(countDistinct('tagId) / numOfDays cast IntegerType as "average tags per hour")
+      .agg(countDistinct('tagId) / numOfDays cast IntegerType as "average present tags")
       .orderBy('hour)
       .as[(Int, Int)]
   }
@@ -154,7 +156,7 @@ object AnalysisJob {
     val thirdAnalysis = Seq(distinctVisitors30).toDF("visitors30min")
     thirdAnalysis.show(false)
 
-    val averageTagsPerHour = computeAverageTagsPerHour(signals)
+    val averageTagsPerHour = computeAveragePresentTagsPerHour(signals)
     averageTagsPerHour.show(false)
   }
 

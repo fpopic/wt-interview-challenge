@@ -44,10 +44,10 @@ object DatastoreJob {
     println(s"Tags:${tags.count()}")
     println(s"Signals:${signals.count()}")
 
-    //    val outConnector = new MySQLConnector(config.getConfig("mysql"))
-    //    val outDS = new StructuredDatasource(outConnector)
-    val outConnector = new CSVFileConnector(config.getConfig("csv"))
-    val outDS = new UnstructuredDatasource(outConnector)
+    val outConnector = new MySQLConnector(config.getConfig("mysql"))
+    val outDS = new StructuredDatasource(outConnector)
+    //    val outConnector = new CSVFileConnector(config.getConfig("csv"))
+    //    val outDS = new UnstructuredDatasource(outConnector)
 
     outDS.writeZones(zones.coalesce(1))
     outDS.writeTags(tags.coalesce(1))
