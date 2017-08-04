@@ -16,11 +16,14 @@ The best way to run it is using IntelliJ IDEA with The Scala plugin.
 
  Scala entry points are in: src/main/scala/com/waytation/conference/jobs
 
- PrepareDatastoreJob.scala -> ensures that the MySQL tables are empty.
+ 1. PrepareDatastoreJob.scala -> ensures that the MySQL tables are empty.
 
- DatastoreJob.scala  -> Spark job that's used to clean data from csv files and populate mysql tables.
+ 2. DatastoreJob.scala  -> Spark job that's used to clean data from csv files and populate mysql tables.
 
- AnalysisJob.scala -> Spark job that computes all results.
+ 3. AnalysisJob.scala -> Spark job that computes all results.
+
+ Note: I imported data from the CSV files and then saved the cleaned data
+  to MySQL database, but to disk too (CSV out-folder from datastore.json CSV configuration) because reading data from disk (SSD) was a lot faster than from my local SQL database.
 
 #### 3. Analysis
 
@@ -57,7 +60,7 @@ The best way to run it is using IntelliJ IDEA with The Scala plugin.
 
 #### 3. Visualizations (Bonus)
 
-I didn't have enough the time to finish it, but the first pick would be:
+I didn't have enough time to finish it, but the first pick would be:
 1. python + matplotlib in jupyter notebook
 2. https://stackoverflow.com/questions/4090383/plotting-unix-timestamps-in-matplotlib
 
