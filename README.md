@@ -1,17 +1,17 @@
-#### 1. Database relations (MySQL):
+#### 1. Database relations (MySQL)
 
 ![relations](relations.png "MySQL relations")
 
-#### 2. Scala Project (short-UML):
+#### 2. Scala Project (short-UML)
 
 ![relations](short-uml.png "MySQL relations")
 
-#### 3. Analysis:
+#### 3. Analysis
 
-**Presence criteria**:
+**Presence criteria**
 1. average rssi level: -82
 2. rssi treshold presence level: -85
-3. max difference between two consecutive timestamps for infering presence status:  1 min
+3. max timestamp difference between two consecutive records for ongoing presence status: 1 min <br/> if | t1 - t2 | > 1 min, attendee probably left the room
 
 |day| the most popular zone  |
 |:--:|:---:|
