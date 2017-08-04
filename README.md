@@ -1,6 +1,7 @@
 #### 1. Database relations (MySQL)
 
 Scripts to create mysql tables are in: mysql.sql
+
 Datastore configuration instances are defined in: datastore.json
 
 ![relations](relations.png "MySQL relations")
@@ -88,6 +89,5 @@ Maybe try with a lambda architecture (Batch & Streaming layers):
 
 4. Which questions would you like to answer and which analyses would you implement?
 
-It can be implemented using Apache Kafka + Spark Streaming or even give a try with the Structured streaming.
+It can be implemented using Apache Kafka + Spark Streaming or even give a try with the Structured Streaming.
 https://spark.apache.org/docs/latest/structured-streaming-programming-guide.html
-
