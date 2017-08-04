@@ -6,21 +6,28 @@ import java.sql.Timestamp
 import com.typesafe.config.ConfigFactory
 import com.waytation.conference.connection.CSVFileConnector
 import com.waytation.conference.datasource.UnstructuredDatasource
+import com.waytation.conference.model.Signal
 import org.apache.spark.sql.functions._
+import org.apache.spark.sql.types.IntegerType
 import org.apache.spark.sql.{DataFrame, Dataset, SparkSession}
 
 object AnalysisJob {
 
-  val rssiPresenceTreshold: Int = -85
+  // average rssi = -82
 
-  def computeMostPopularZoneForEachDay(joinedSignals: DataFrame): Dataset[(Int, String)] = {
+  private val rssiPresenceTreshold = -85
 
-    import joinedSignals.sparkSession.implicits._
+  def computeMostPopularZoneForEachDay(richsignals: DataFrame): Dataset[(Int, String)] = {
+    import richsignals.sparkSession.implicits._
 
     // OK with dummy rssi criteria
-    val joined = joinedSignals
+    val joined = richsignals
       .withColumn("day", dayofyear('timestamp))
-      .select('day, 'name as 'room, 'rssi)
+      .select(
+        'day,
+        'name as 'room,
+        'rssi
+      )
 
     // day of conference = dayofyear - min(dayofyear) + 1
     val minDay = joined.select('day).agg(min('day)).first().getInt(0)
@@ -40,23 +47,28 @@ object AnalysisJob {
       .orderBy('day)
   }
 
-  def computeDistinctVisitors(joinedSignals: DataFrame): Long = {
-    import joinedSignals.sparkSession.implicits._
-    joinedSignals
+  def computeDistinctVisitors(signals: Dataset[Signal]): Long = {
+    import signals.sparkSession.implicits._
+    signals
       .select('tagId)
       .distinct()
       .count()
   }
 
-  def computeDistinctVisitors30min(joinedSignals: DataFrame): Long = {
-    import joinedSignals.sparkSession.implicits._
+  def computeDistinctVisitors30min(richSignals: DataFrame): Long = {
+    import richSignals.sparkSession.implicits._
 
     // in miliseconds
     val oneMin = 60 * 1000L
     val thirtyMin = 30 * oneMin
 
-    joinedSignals
-      .select('timestamp, 'tagId as 'user, 'name as 'room, 'rssi)
+    richSignals
+      .select(
+        'timestamp,
+        'tagId as 'user,
+        'name as 'room,
+        'rssi
+      )
       .where('rssi >= rssiPresenceTreshold)
       .drop('rssi)
       .as[(Timestamp, Int, String)]
@@ -72,10 +84,8 @@ object AnalysisJob {
             val elapsed = t2 - t1
             if (elapsed <= oneMin) total + elapsed
             else total
-          case _ => {
-            println(user, room)
+          case _ =>
             0L
-          }
         }
       (user, timeInRoom)
     }
@@ -85,16 +95,35 @@ object AnalysisJob {
       .count()
   }
 
+  def computeAverageTagsPerHour(signals: Dataset[Signal]): Dataset[(Int, Int)] = {
+    import signals.sparkSession.implicits._
+
+    val (firstDay, lastDay) = signals
+      .select(dayofyear('timestamp) as 'day)
+      .agg(min('day), max('day))
+      .as[(Int, Int)]
+      .first()
+
+    val numOfDays = lastDay - firstDay + 1
+
+    signals
+      .select(
+        hour('timestamp) as "hour",
+        'tagId
+      )
+      .groupBy('hour)
+      .agg(countDistinct('tagId) / numOfDays cast IntegerType as "average tags per hour")
+      .orderBy('hour)
+      .as[(Int, Int)]
+  }
+
   def main(args: Array[String]): Unit = {
 
     implicit val spark = SparkSession
       .builder
       .master("local[*]")
       .appName("WaytationAnalsisJob")
-      .config("spark.sql.shuffle.partitions", "4")
       .getOrCreate
-
-    import spark.implicits._
 
     val file = new File("datastore.json")
     val config = ConfigFactory.parseFile(file).getConfig("csv")
@@ -104,29 +133,29 @@ object AnalysisJob {
     val stations = ds.getStations
     val zones = ds.getZones
     val tags = ds.getTags
-    val signals = ds.getSignals
+    val signals = ds.getSignals.cache()
 
-    val joinedSignals = signals
-      .join(stations, 'stationId === 'id)
-      .drop("id")
-      .join(zones, 'zoneId === 'id)
-      .drop("id")
-      .join(tags, 'tagId === 'id)
-      .drop("id")
+    import spark.implicits._
+
+    val richSignals = signals
+      .join(stations, 'stationId === 'id).drop("id")
+      .join(zones, 'zoneId === 'id).drop("id")
+      .join(tags, 'tagId === 'id).drop("id")
       .cache()
 
-    //    val firstAnalysis = computeMostPopularZoneForEachDay(joinedSignals)
-    //    firstAnalysis.show(false)
-    //    firstAnalysis.coalesce(1).rdd.saveAsTextFile("result/first.txt")
+    val firstAnalysis = computeMostPopularZoneForEachDay(richSignals)
+    firstAnalysis.show(false)
 
-    //    val distinctVisitors = computeDistinctVisitors(joinedSignals)
-    //    val secondAnalysis = Seq(distinctVisitors).toDF("visitors")
-    //    secondAnalysis.show(false)
-    //    secondAnalysis.coalesce(1).rdd.saveAsTextFile("result/second.txt")
+    val distinctVisitors = computeDistinctVisitors(signals)
+    val secondAnalysis = Seq(distinctVisitors).toDF("visitors")
+    secondAnalysis.show(false)
 
-    val distinctVisitors30 = computeDistinctVisitors30min(joinedSignals)
+    val distinctVisitors30 = computeDistinctVisitors30min(richSignals)
     val thirdAnalysis = Seq(distinctVisitors30).toDF("visitors30min")
     thirdAnalysis.show(false)
-  //  thirdAnalysis.coalesce(1).rdd.saveAsTextFile("result/third.txt")
+
+    val averageTagsPerHour = computeAverageTagsPerHour(signals)
+    averageTagsPerHour.show(false)
   }
+
 }

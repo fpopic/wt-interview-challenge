@@ -5,7 +5,7 @@ import java.sql.DriverManager
 
 import com.typesafe.config.ConfigFactory
 
-object PrepareMySQLJob {
+object PrepareDatastoreJob {
 
   def main(args: Array[String]): Unit = {
 
