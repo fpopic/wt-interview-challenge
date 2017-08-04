@@ -2,7 +2,6 @@ lazy val root = (project in file(".")).settings(
   name := "WaytationChallenge",
   version := "1.0",
   scalaVersion := "2.11.11",
-  mainClass in Compile := Some("com.waytation.Main"),
   assemblyOption in assembly := (assemblyOption in assembly).value.copy(includeScala = false),
   parallelExecution in Test := true,
   test in assembly := {} // remove if you want to start tests
