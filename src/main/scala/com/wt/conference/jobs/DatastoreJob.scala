@@ -3,8 +3,6 @@ package com.wt.conference.jobs
 import java.io.File
 
 import com.typesafe.config.ConfigFactory
-import com.waytation.conference.connection.{CSVFileConnector, MySQLConnector}
-import com.waytation.conference.datasource.{StructuredDatasource, UnstructuredDatasource}
 import com.wt.conference.connection.{CSVFileConnector, MySQLConnector}
 import com.wt.conference.datasource.{StructuredDatasource, UnstructuredDatasource}
 import com.wt.conference.model.Signal

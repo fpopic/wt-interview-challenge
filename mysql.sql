@@ -37,7 +37,7 @@ create index stations_zones_id_fk
 
 alter table signals
 	add constraint signals_stations_stations_id_fk
-		foreign key (stations_id) references waytation.stations (id)
+		foreign key (stations_id) references wt.stations (id)
 ;
 
 create table tags
@@ -51,7 +51,7 @@ create table tags
 
 alter table signals
 	add constraint signals_tags_id_fk
-		foreign key (distributed_tags_id) references waytation.tags (id)
+		foreign key (distributed_tags_id) references wt.tags (id)
 ;
 
 create table zones
@@ -64,7 +64,7 @@ create table zones
 
 alter table stations
 	add constraint stations_zones_id_fk
-		foreign key (zones_id) references waytation.zones (id)
+		foreign key (zones_id) references wt.zones (id)
 ;
 
 

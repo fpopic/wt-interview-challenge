@@ -4,8 +4,6 @@ import java.io.File
 import java.sql.Timestamp
 
 import com.typesafe.config.ConfigFactory
-import com.waytation.conference.connection.CSVFileConnector
-import com.waytation.conference.model.Signal
 import com.wt.conference.connection.CSVFileConnector
 import com.wt.conference.datasource.UnstructuredDatasource
 import com.wt.conference.model.Signal

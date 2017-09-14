@@ -7,7 +7,7 @@
     "driver": "com.mysql.jdbc.Driver",
     "host": "localhost",
     "port": "3306",
-    "database": "waytation",
+    "database": "wt",
     "username": "root",
     "password": "toor"
   }
