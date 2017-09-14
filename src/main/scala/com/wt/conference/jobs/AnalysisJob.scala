@@ -124,7 +124,7 @@ object AnalysisJob {
     implicit val spark = SparkSession
       .builder
       .master("local[*]")
-      .appName("WaytationAnalsisJob")
+      .appName("WTAnalysisJob")
       .getOrCreate
 
     val file = new File("datastore.json")
