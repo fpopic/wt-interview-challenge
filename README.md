@@ -14,7 +14,7 @@ Running:
 
 The best way to run it is using IntelliJ IDEA with The Scala plugin.
 
- Scala entry points are in: src/main/scala/com/waytation/conference/jobs
+ Scala entry points are in: src/main/scala/com/wt/conference/jobs
 
  1. PrepareDatastoreJob.scala -> ensures that the MySQL tables are empty.
 

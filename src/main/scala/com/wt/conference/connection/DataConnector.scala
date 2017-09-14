@@ -1,4 +1,4 @@
-package com.waytation.conference.connection
+package com.wt.conference.connection
 
 import com.typesafe.config.Config
 import org.apache.spark.sql.{DataFrame, Dataset, SaveMode, SparkSession}

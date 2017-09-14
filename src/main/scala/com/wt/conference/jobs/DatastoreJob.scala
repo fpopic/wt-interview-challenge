@@ -1,11 +1,13 @@
-package com.waytation.conference.jobs
+package com.wt.conference.jobs
 
 import java.io.File
 
 import com.typesafe.config.ConfigFactory
 import com.waytation.conference.connection.{CSVFileConnector, MySQLConnector}
 import com.waytation.conference.datasource.{StructuredDatasource, UnstructuredDatasource}
-import com.waytation.conference.model.Signal
+import com.wt.conference.connection.{CSVFileConnector, MySQLConnector}
+import com.wt.conference.datasource.{StructuredDatasource, UnstructuredDatasource}
+import com.wt.conference.model.Signal
 import org.apache.spark.sql.SparkSession
 
 object DatastoreJob {

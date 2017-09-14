@@ -1,12 +1,14 @@
-package com.waytation.conference.jobs
+package com.wt.conference.jobs
 
 import java.io.File
 import java.sql.Timestamp
 
 import com.typesafe.config.ConfigFactory
 import com.waytation.conference.connection.CSVFileConnector
-import com.waytation.conference.datasource.UnstructuredDatasource
 import com.waytation.conference.model.Signal
+import com.wt.conference.connection.CSVFileConnector
+import com.wt.conference.datasource.UnstructuredDatasource
+import com.wt.conference.model.Signal
 import org.apache.spark.sql.functions._
 import org.apache.spark.sql.types.IntegerType
 import org.apache.spark.sql.{DataFrame, Dataset, SparkSession}

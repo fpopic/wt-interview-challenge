@@ -1,4 +1,4 @@
-package com.waytation.conference.jobs
+package com.wt.conference.jobs
 
 import java.io.File
 import java.sql.DriverManager

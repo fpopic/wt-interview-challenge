@@ -1,4 +1,4 @@
-package com.waytation.conference.misc
+package com.wt.conference.misc
 
 import java.sql.Timestamp
 

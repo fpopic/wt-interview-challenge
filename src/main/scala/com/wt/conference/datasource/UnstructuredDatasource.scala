@@ -1,10 +1,12 @@
-package com.waytation.conference.datasource
+package com.wt.conference.datasource
 
 import java.sql.Timestamp
 
 import com.waytation.conference.connection.DataConnector
 import com.waytation.conference.misc.UnixTimestamp.timestamp_to_milis
 import com.waytation.conference.model.{Signal, Station, Tag, Zone}
+import com.wt.conference.connection.DataConnector
+import com.wt.conference.model.{Signal, Station, Tag, Zone}
 import org.apache.spark.sql.SaveMode._
 import org.apache.spark.sql.{Dataset, SparkSession}
 

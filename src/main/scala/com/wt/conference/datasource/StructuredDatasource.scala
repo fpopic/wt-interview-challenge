@@ -1,7 +1,8 @@
-package com.waytation.conference.datasource
+package com.wt.conference.datasource
 
-import com.waytation.conference.connection.DataConnector
 import com.waytation.conference.model.{Signal, Station, Tag, Zone}
+import com.wt.conference.connection.DataConnector
+import com.wt.conference.model.{Signal, Station, Tag, Zone}
 import org.apache.spark.sql.SaveMode.Append
 import org.apache.spark.sql.{Dataset, SaveMode, SparkSession}
 

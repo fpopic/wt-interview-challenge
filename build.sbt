@@ -1,5 +1,5 @@
 lazy val root = (project in file(".")).settings(
-  name := "WaytationChallenge",
+  name := "WTInterviewChallenge",
   version := "1.0",
   scalaVersion := "2.11.11",
   assemblyOption in assembly := (assemblyOption in assembly).value.copy(includeScala = false),

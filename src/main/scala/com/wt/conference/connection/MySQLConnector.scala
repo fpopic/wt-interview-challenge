@@ -1,4 +1,4 @@
-package com.waytation.conference.connection
+package com.wt.conference.connection
 
 import java.util.Properties
 

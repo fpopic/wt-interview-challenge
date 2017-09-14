@@ -1,8 +1,8 @@
-package com.waytation.conference.model
+package com.wt.conference.model
 
 import java.sql.Timestamp
 
-import com.waytation.conference.misc.UnixTimestamp._
+import com.wt.conference.misc.UnixTimestamp._
 import org.apache.spark.sql.Row
 
 /*
