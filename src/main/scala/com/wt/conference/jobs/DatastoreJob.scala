@@ -17,7 +17,7 @@ object DatastoreJob {
     implicit val spark =
       SparkSession.builder
         .master("local[*]")
-        .appName("WaytationDatastoreJob")
+        .appName("WTDatastoreJob")
         .config("spark.sql.shuffle.partitions", "4")
         .getOrCreate
 
